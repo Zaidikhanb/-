@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ali Institute Registration</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gradient">
+  <main class="card">
+    <header class="card-header">
+      <div class="logo">AI</div>
+      <div>
+        <h1 class="title">Ali Institute Registration</h1>
+        <p class="subtitle">Quick registration — saved to Git-style JSON + single VCF per entry</p>
+      </div>
+    </header>
+
+    <form id="regForm" class="form" onsubmit="return false">
+      <div class="row">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" placeholder="e.g. Ali Khan" required />
+      </div>
+
+      <div class="row grid-2">
+        <div>
+          <label for="childCount">Number of Child</label>
+          <select id="childCount" name="childCount" onchange="onChildCount()">
+            <option value="none">none</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>more</option>
+          </select>
+        </div>
+        <div id="classWrap" style="display:none">
+          <label for="class">Class</label>
+          <select id="class" name="class">
+            <option>10th</option><option>11th</option><option>12th</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row grid-2">
+        <div>
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender">
+            <option>male</option><option>female</option>
+          </select>
+        </div>
+        <div>
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" placeholder="03XXXXXXXXX" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="address">Address</label>
+        <textarea id="address" name="address" rows="3" placeholder="Home / Village / City"></textarea>
+      </div>
+
+      <div class="row grid-2">
+        <div>
+          <label for="interest">Interest</label>
+          <select id="interest" name="interest">
+            <option>yes</option><option>no</option>
+          </select>
+        </div>
+        <div>
+          <label for="surveyor">Surveyor name</label>
+          <input id="surveyor" name="surveyor" type="text" placeholder="Surveyor" />
+        </div>
+      </div>
+
+      <div class="row actions">
+        <button class="btn primary" id="submitBtn">Submit</button>
+        <button class="btn ghost" id="clearBtn" type="button">Clear</button>
+      </div>
+
+      <footer class="footer">this application is managed by Zaid Ashiq <a href="tel:03251021727">03251021727</a></footer>
+    </form>
+  </main>
+
+  <script src="/utils.js"></script>
+</body>
+</html>

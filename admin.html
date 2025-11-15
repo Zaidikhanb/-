@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Ali Institute</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-admin">
+  <main class="admin-card">
+    <h2>Admin Dashboard</h2>
+    <div class="login">
+      <input id="pass" type="password" placeholder="Enter admin password (from Vercel ENV)" />
+      <button id="loginBtn" class="btn primary">Login</button>
+    </div>
+
+    <section id="dashboard" style="display:none">
+      <div class="admin-actions">
+        <button class="btn" id="downloadJSON">Download JSON</button>
+        <button class="btn" id="downloadVCF">Download VCF</button>
+        <button class="btn danger" id="purgeAll">Delete All</button>
+      </div>
+
+      <div class="tablewrap">
+        <table id="dataTable">
+          <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Child</th><th>Interest</th><th>Surveyor</th><th>Action</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">Managed by Zaid Ashiq — use admin password stored in Vercel ENV: <code>ADMIN_PASS</code></footer>
+  </main>
+
+  <script>
+  async function qs(q){return document.querySelector(q);}
+  const loginBtn = await qs('#loginBtn');
+  const passInput = await qs('#pass');
+  const dashboard = await qs('#dashboard');
+  const dataTableBody = await qs('#dataTable tbody');
+  loginBtn.addEventListener('click', async ()=>{
+    const res = await fetch(`/api/login?password=${encodeURIComponent(passInput.value)}`);
+    const ok = await res.text();
+    if(ok!=='1'){ return alert('Wrong password'); }
+    document.querySelector('.login').style.display='none';
+    dashboard.style.display='block';
+    loadAll();
+  });
+  async function loadAll(){
+    const res = await fetch('/api/all');
+    const arr = await res.json();
+    dataTableBody.innerHTML = arr.map((r,i)=>`<tr><td>${i+1}</td><td>${r.name}</td><td>${r.phone}</td><td>${r.childCount}</td><td>${r.interest}</td><td>${r.surveyor||''}</td><td><button class="btn danger small" onclick=del(${i})>Delete</button></td></tr>`).join('');
+  }
+  async function del(i){ if(!confirm('Delete entry?')) return; await fetch(`/api/delete?id=${i}`); loadAll(); }
+  document.getElementById('downloadJSON').addEventListener('click', ()=> location.href='/api/download-json');
+  document.getElementById('downloadVCF').addEventListener('click', ()=> location.href='/api/download-vcf');
+  document.getElementById('purgeAll').addEventListener('click', async ()=>{ if(!confirm('Delete ALL data?')) return; await fetch('/api/purge'); loadAll(); });
+  </script>
+</body>
+</html>
